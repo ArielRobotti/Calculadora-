@@ -4,7 +4,6 @@
 # autor: ariel G. Robotti
 # email: arielrobotti@gmail.com
 
-
 from tkinter import * 
 from functools import * 
 from math import*
@@ -18,19 +17,14 @@ raiz.iconbitmap("alma.ico")
 fondoRaiz=PhotoImage(file="fondoRaiz.png")
 fondo=Label(raiz,width=700,height=700,image=fondoRaiz).place(x=0,y=0)
 
-
-
 colBoton="#66AACC"
 colBtMem="#252500"
 mostrar=StringVar()
-mostrarMas=StringVar()
 mostrarMem=[StringVar(),StringVar(),StringVar()]
 
 memoria=["","",""]
-
 noConcatenar=0
 buffer1=0
-
 bufferOp=""
 
 #-----------  display principal-----------------
@@ -45,43 +39,47 @@ memoFrame=Frame(raiz,bg="#9AA4A7",bd=5)
 memoFrame.grid(row=2,column=1,columnspan=3)
 
 #---------------marco para el teclado numerico----
+
 fondo=PhotoImage(file="fondoNum.png")
 teclado=Label(raiz,width=300,height=300,bg="#64788E",image=fondo)
 teclado.grid(row=3,column=1)
 
 #------marco para botones de operaciones y constantes-----
+
 fondo2=PhotoImage(file="fondoNum2.png")
 operFrame=Label(raiz,width=200,height=300,bg="#64788E",image=fondo2)
 operFrame.grid(row=3,column=2)
 
 #---------------------Funciones-------------------------
 
-def escribir(entrada):						#se introducen los numeros  a operar
+def escribir(entrada):							#se introducen los numeros  a operar
 	global noConcatenar	
 	 
-	if noConcatenar==1 or noConcatenar==2:	#si se presionó una tecla de operacion(caso 2),
+	if noConcatenar==1 or noConcatenar==2:				#si se presionó una tecla de operacion(caso 2),
 		if entrada=="K" or entrada=="m" or entrada=="-":	#o se se introdujo una constante (caso 1)
 			pass
 		else:
-			display.delete(0,END)			#limpia la pantalla 
-	if mostrar.get()=="0":  				#si la pantalla esta en 0
+			display.delete(0,END)				#limpia la pantalla
+			
+	#-------Este bloque imprime el primer digito ingresado ----------------------	
 
-#-------Este bloque imprime el primer digito ingresado 
+	if mostrar.get()=="0":  					#si la pantalla esta en 0 
 		if entrada=="0" or entrada=="-" or entrada=="K" or entrada=="m":	
 			pass
 		elif entrada==",":
 			mostrar.set("0,")
 		else:
-			mostrar.set(entrada)		
-	else:									#si en cambio la pantalla no está en cero
-		if entrada=="-":					#si fué presionado un cambio de signo		
-			if mostrar.get()[0]!="-":		#si el signo no era negativo
-				display.insert(0,"-")		#inserta el signo en la posicion 0 (a la izquierda)
+			mostrar.set(entrada)
+	#----------------------------------------------------------------------------			
+	else:									#si en cambio la pantalla no está en cero...
+		if entrada=="-":						#si fué presionado un cambio de signo		
+			if mostrar.get()[0]!="-":				#y si el signo no era negativo
+				display.insert(0,"-")				#inserta el signo en la posicion 0 (a la izquierda)
 			else:							#si el signo ya era negativo
-				display.delete(0,1)			#lo borra
+				display.delete(0,1)				#lo borra
 
-		elif entrada==",":					#si fue ingresada una ","
-			if len(mostrar.get())==0:		#
+		elif entrada==",":						#si fue ingresada una ","
+			if len(mostrar.get())==0:				#creo que acá hay un error
 				mostrar.set("0,")
 			else:
 				if "," in mostrar.get():
@@ -90,11 +88,11 @@ def escribir(entrada):						#se introducen los numeros  a operar
 					mostrar.set(mostrar.get()+',')
 					
 		elif entrada=="K":
-			comaAPunto=mostrar.get().replace(",",".")					
+			comaAPunto=mostrar.get().replace(",",".")		#reemplaza las comas por puntas para operar			
 			aFloatK=float(comaAPunto)*1000
-			if (aFloatK-int(aFloatK))==0: 		#muestra por ejemplo 9 en lugar de 9,0
+			if (aFloatK-int(aFloatK))==0: 				#muestra por ejemplo 9 en lugar de 9,0
 				aFloatK=int(aFloatK)
-			puntoAComa=str(aFloatK).replace(".",",")
+			puntoAComa=str(aFloatK).replace(".",",")		#reemplaza los puntos por comas para mostrar 
 			mostrar.set(puntoAComa)
 		elif entrada=="m":
 			comaAPunto=mostrar.get().replace(",",".")
@@ -106,8 +104,11 @@ def escribir(entrada):						#se introducen los numeros  a operar
 
 		else:
 			mostrar.set(mostrar.get()+entrada)
-	noConcatenar=0
-
+	noConcatenar=0								#cada vez que se llama a esta funcion, la oncatenacion 
+										#queda habilitada, en realidad para evitar malos entendidos
+										#tendria que renombrar la variable como "concatenar" y que
+										#salga con valor 1
+#-------------------------------------------------------------------------------------------------------
 def escribirConst(entrada,mem):
 	global noConcatenar
 	noConcatenar=1
@@ -148,6 +149,7 @@ def backSpace():
 	else:
 		display.delete(len(mostrar.get())-1,END)
 		cont=0
+		
 #--------- Operaciones que requieren ingresar un nuevo valor ------------------
 
 def operarConSiguiente(oper):	
@@ -159,7 +161,6 @@ def operarConSiguiente(oper):
 		pass
 	else:
 		getValor=float(enPantalla)
-
 		if noConcatenar==0 or noConcatenar==1:
 			noConcatenar=2
 			if bufferOp!="":
@@ -206,13 +207,11 @@ def operarConSiguiente(oper):
 					if buffer1-int(buffer1)==0:
 					 	buffer1=int(buffer1)
 					mostrar.set(str(buffer1).replace(".",","))
-
 				
 			else:
 				buffer1=getValor
 				bufferOp=oper
-
-			
+	
 		else:
 			bufferOp=oper 
 			noConcatenar=2
@@ -221,6 +220,7 @@ def operarConSiguiente(oper):
 			bufferOp=""
 		else:
 			bufferOp=oper
+			
 #--------- Operaciones que requieren solo el valor en pantalla --------------
 def operar(oper):
 	global noConcatenar
