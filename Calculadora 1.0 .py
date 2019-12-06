@@ -109,7 +109,7 @@ def escribir(entrada):							#se introducen los numeros  a operar
 										#tendria que renombrar la variable como "concatenar" y que
 										#salga con valor 1
 #-------------------------------------------------------------------------------------------------------
-def escribirConst(entrada,mem):
+def escribirConst(entrada,mem=0):
 	global noConcatenar
 	noConcatenar=1
 	if entrada=="Pi":
@@ -142,14 +142,14 @@ def escribirConst(entrada,mem):
 #---------------------- Barra de retroceso -------------------
 
 def backSpace():
-	
-	if len(mostrar.get())==1 or (len(mostrar.get())==2 and mostrar.get()[0]=="-"):
-		mostrar.set("0")
-		cont=0
+	if '*' in mostrar.get():
+		pass
 	else:
-		display.delete(len(mostrar.get())-1,END)
-		cont=0
-		
+		if len(mostrar.get())==1 or (len(mostrar.get())==2 and mostrar.get()[0]=="-"):
+			mostrar.set("0")
+		else:
+			display.delete(len(mostrar.get())-1,END)
+
 #--------- Operaciones que requieren ingresar un nuevo valor ------------------
 
 def operarConSiguiente(oper):	
@@ -461,16 +461,16 @@ raizNdeX.grid(row=5,column=2,padx=5,pady=5)
 
 #----------------------------------------------------------
 
-Pi=Button(operFrame,text="PI",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"Pi",0))
+Pi=Button(operFrame,text="PI",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"Pi"))
 Pi.grid(row=1,column=3,padx=5,pady=5)
 
-euler=Button(operFrame,text="e",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"euler",0))
+euler=Button(operFrame,text="e",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"euler"))
 euler.grid(row=2,column=3,padx=5,pady=5)
 
 ln=Button(operFrame,text="ln",font=("Arial",18),bg=colBoton,width=4,command= partial(operar,"ln"))
 ln.grid(row=3,column=3,padx=5,pady=5)
 
-raizD2=Button(operFrame,text="√2",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"raizD2",0))
+raizD2=Button(operFrame,text="√2",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"raizD2"))
 raizD2.grid(row=4,column=3,padx=5,pady=5)
 
 botonC=Button(operFrame,text="C",font=("Arial",18),bg=colBoton,width=4,command= partial(borrar))
@@ -478,20 +478,20 @@ botonC.grid(row=5,column=3,padx=5,pady=5)
 
 #-------------------------------------------------------------------
 
-aureo=Button(operFrame,text="Au",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"au",0))
+aureo=Button(operFrame,text="Au",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"au"))
 aureo.grid(row=1,column=4,padx=5,pady=5)
 
-cred=Button(operFrame,text="¿?",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"cred",0))
+cred=Button(operFrame,text="¿?",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"cred"))
 cred.grid(row=2,column=4,padx=5,pady=5)
 
 log10=Button(operFrame,text="log",font=("Arial",18),bg=colBoton,width=4,command= partial(operar,"log"))
 log10.grid(row=3,column=4,padx=5,pady=5)
 
 imgRaiz12ava2=PhotoImage(file="Raiz12de2.gif",height=42,width=60)
-raiz12ava2=Button(operFrame,image=imgRaiz12ava2,bg=colBoton,command= partial(escribirConst,"12raiz2",0))
+raiz12ava2=Button(operFrame,image=imgRaiz12ava2,bg=colBoton,command= partial(escribirConst,"12raiz2"))
 raiz12ava2.grid(row=4,column=4,padx=5,pady=5)
 
-botonCe=Button(operFrame,text="CE",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,'CE',0))
+botonCe=Button(operFrame,text="CE",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,'CE'))
 botonCe.grid(row=5,column=4,padx=5,pady=5)
 
 igual=Button(raiz,text="=",font=("Arial",18),bg=colBoton,width=40,command= partial(operarConSiguiente,"="))
