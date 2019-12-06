@@ -1,7 +1,7 @@
 # Proyecto de calculadora basica y funcional, como parte de mi rutina de aprendizaje adictivo
 # del lenguaje python y de programacion en general comenzado hace dos meses.
 # Aunque puede quedar sujeto a eventuales modificacion voy a dar por finalizado el presente proyecto
-# autor: ariel G. Robotti
+# autor: Ariel G. Robotti
 # email: arielrobotti@gmail.com
 
 from tkinter import * 
