@@ -28,7 +28,6 @@ buffer1=0
 bufferOp=""
 
 #-----------  display principal-----------------
-
 display=Entry(raiz,width=26,font=("Eras Bold ITC",24),textvariable=mostrar,bd=10,justify="right")
 display.grid(row=1,column=1,padx=10,pady=10,columnspan=4)
 display.config(background="black", fg="#DEDB89",justify="right")
@@ -39,31 +38,26 @@ memoFrame=Frame(raiz,bg="#9AA4A7",bd=5)
 memoFrame.grid(row=2,column=1,columnspan=3)
 
 #---------------marco para el teclado numerico----
-
 fondo=PhotoImage(file="fondoNum.png")
 teclado=Label(raiz,width=300,height=300,bg="#64788E",image=fondo)
 teclado.grid(row=3,column=1)
 
 #------marco para botones de operaciones y constantes-----
-
 fondo2=PhotoImage(file="fondoNum2.png")
 operFrame=Label(raiz,width=200,height=300,bg="#64788E",image=fondo2)
 operFrame.grid(row=3,column=2)
 
-#---------------------Funciones-------------------------
-
-def escribir(entrada):							#se introducen los numeros  a operar
+def escribir(entrada):								# se introducen los numeros  a operar
 	global noConcatenar	
 	 
-	if noConcatenar==1 or noConcatenar==2:				#si se presionó una tecla de operacion(caso 2),
-		if entrada=="K" or entrada=="m" or entrada=="-":	#o se se introdujo una constante (caso 1)
+	if noConcatenar==1 or noConcatenar==2:					# si se presionó una tecla de operacion(caso 2),
+		if entrada=="K" or entrada=="m" or entrada=="-":		# o si se introdujo una constante (caso 1)
 			pass
 		else:
-			display.delete(0,END)				#limpia la pantalla
+			display.delete(0,END)					# limpia la pantalla
 			
 	#-------Este bloque imprime el primer digito ingresado ----------------------	
-
-	if mostrar.get()=="0":  					#si la pantalla esta en 0 
+	if mostrar.get()=="0":  						# si la pantalla esta en 0 
 		if entrada=="0" or entrada=="-" or entrada=="K" or entrada=="m":	
 			pass
 		elif entrada==",":
@@ -79,14 +73,13 @@ def escribir(entrada):							#se introducen los numeros  a operar
 				display.delete(0,1)				#lo borra
 
 		elif entrada==",":						#si fue ingresada una ","
-			if len(mostrar.get())==0:				#creo que acá hay un error
+			if len(mostrar.get())==0:				
 				mostrar.set("0,")
 			else:
 				if "," in mostrar.get():
 					pass
 				else:
-					mostrar.set(mostrar.get()+',')
-					
+					mostrar.set(mostrar.get()+',')					
 		elif entrada=="K":
 			comaAPunto=mostrar.get().replace(",",".")		#reemplaza las comas por puntas para operar			
 			aFloatK=float(comaAPunto)*1000
@@ -103,11 +96,10 @@ def escribir(entrada):							#se introducen los numeros  a operar
 			mostrar.set(puntoAComa)
 
 		else:
-			mostrar.set(mostrar.get()+entrada)
-	noConcatenar=0								#cada vez que se llama a esta funcion, la oncatenacion 
-										#queda habilitada, en realidad para evitar malos entendidos
-										#tendria que renombrar la variable como "concatenar" y que
-										#salga con valor 1
+			mostrar.set(mostrar.get()+entrada)		#cada vez que se llama a esta función, la concatenación 
+	noConcatenar=0							#queda habilitada, en realidad para evitar malos entendidos								
+									#tendría que renombrar la variable como "concatenar" y que
+									#salga de la función con valor 1
 #-------------------------------------------------------------------------------------------------------
 def escribirConst(entrada,mem=0):
 	global noConcatenar
@@ -164,59 +156,49 @@ def operarConSiguiente(oper):
 		if noConcatenar==0 or noConcatenar==1:
 			noConcatenar=2
 			if bufferOp!="":
-				if bufferOp=="+":
+				if bufferOp=="+":					# operacion suma
 					buffer1+=getValor
-
-				elif bufferOp=="-":
+				elif bufferOp=="-":					# operacion resta
 					buffer1-=getValor
-
-				elif bufferOp=="*":
+				elif bufferOp=="*":					# operacion multiplicación
 					buffer1*=getValor
-
-				elif bufferOp=="/":
+				elif bufferOp=="/":					# operacion división
 					divisor=getValor
 					if divisor==0:
 						borrar()
-						buffer1="E"
+						buffer1="E"				# error division entre 0
 					else:
 						buffer1/=divisor
-
-				elif bufferOp=="rYdeX":
-					if buffer1<=0:					
-						if getValor%2 ==0:			# Error si es un entero negativo par 
+				elif bufferOp=="rYdeX":					# operación raiz Y esima de X
+					if buffer1<=0:					# Si X es negativo,
+						if getValor%2 ==0:			# error si Y es un entero negativo par 
 							buffer1="E2"					
-						elif getValor%2==1:			# Si es un entero negativo impar el resultado es negativo
-							buffer1*=-1
+						elif getValor%2==1:			# Si Y es un entero negativo impar 
+							buffer1*=-1			# el resultado es negativo
 							buffer1=-(buffer1**(1/getValor))
-						else:						# si es un negativo no entero
+						else:					# si Y es un negativo no entero
 							buffer1*=-1
-							buffer1=buffer1**(1/getValor)
+							buffer1=buffer1**(1/getValor)	# el resultado es positivo
 					else:
-						buffer1=buffer1**(1/getValor)
-					
-				elif bufferOp=="XexpY":
-					buffer1=buffer1**getValor
-
+						buffer1=buffer1**(1/getValor)				
+				elif bufferOp=="XexpY":					# Esta función necesita ser corregida.	
+					buffer1=buffer1**getValor			# Falla cuando buffer1 es menor que 0
+											# y el exponente (getValor) está entre -1 y 1
 				if buffer1=="E":
 					mostrar.set("* ERROR (Resultado infinito) *")
-
 				elif buffer1=="E2":
 					mostrar.set("* Operacion no soportada *")
-
 				else:
 					if buffer1-int(buffer1)==0:
 					 	buffer1=int(buffer1)
-					mostrar.set(str(buffer1).replace(".",","))
-				
+					mostrar.set(str(buffer1).replace(".",","))			
 			else:
 				buffer1=getValor
 				bufferOp=oper
-	
 		else:
 			bufferOp=oper 
 			noConcatenar=2
-		if oper=="=":
-			
+		if oper=="=":		
 			bufferOp=""
 		else:
 			bufferOp=oper
@@ -239,7 +221,6 @@ def operar(oper):
 				if y-int(y)==0:
 					y=int(y)	
 				mostrar.set(str(y).replace(".",","))
-
 		elif oper=="log":
 			if getValor<=0:
 				borrar()
@@ -249,7 +230,6 @@ def operar(oper):
 				if x-int(x)==0:
 					x=int(x)
 				mostrar.set(str(x).replace(".",","))
-
 		elif oper=="R2":
 			if getValor<0:
 				mostrar.set("* Operacion no soportada *")
@@ -258,19 +238,16 @@ def operar(oper):
 				if r2-int(r2)==0:
 					r2=int(r2)
 				mostrar.set(str(r2).replace(".",","))
-
 		elif oper=="XCuad":
 			X2=getValor**2
 			if X2-int(X2)==0:
 				X2=int(X2)
 			mostrar.set(str(X2).replace(".",","))
 
-
 		elif oper=="1/x":
 			if getValor==0:
 				borrar()
-				mostrar.set("* ERROR *")
-				
+				mostrar.set("* ERROR *")				
 			else:
 				invert=1/getValor
 				if invert-int(invert)==0:
@@ -282,7 +259,6 @@ def operar(oper):
 				mostrar.set("* ERROR, solo valores enteros *")
 			else:
 				mostrar.set(factorial(getValor))
-
 
 #-- Guarda el valor del display en la posicion (mem) de memoria[] ----
 
@@ -307,7 +283,6 @@ def borrar():
 	buffer1=0
 	bufferOp=""
 	mostrar.set("0")
-
 
 #--------------------- Memoria 1 ------------------------
 
@@ -417,8 +392,6 @@ botonBack.grid(row=6,column=2,padx=5,pady=5)
 
 botonMili=Button(teclado,text="mili",font=("Arial",18),bg=colBoton,width=4,command= partial(escribir,"m"))
 botonMili.grid(row=6,column=3,padx=5,pady=5)
-
-
 
 #-------------Botones de operaciones------------------
 
