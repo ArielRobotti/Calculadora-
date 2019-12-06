@@ -47,17 +47,17 @@ fondo2=PhotoImage(file="fondoNum2.png")
 operFrame=Label(raiz,width=200,height=300,bg="#64788E",image=fondo2)
 operFrame.grid(row=3,column=2)
 
-def escribir(entrada):								# se introducen los numeros  a operar
+def escribir(entrada):								#se introducen los numeros  a operar
 	global noConcatenar	
 	 
-	if noConcatenar==1 or noConcatenar==2:					# si se presionó una tecla de operacion(caso 2),
-		if entrada=="K" or entrada=="m" or entrada=="-":		# o si se introdujo una constante (caso 1)
+	if noConcatenar==1 or noConcatenar==2:					#si se presionó una tecla de operacion(caso 2),
+		if entrada=="K" or entrada=="m" or entrada=="-":		#o se se introdujo una constante (caso 1)
 			pass
 		else:
-			display.delete(0,END)					# limpia la pantalla
+			display.delete(0,END)					#limpia la pantalla
 			
 	#-------Este bloque imprime el primer digito ingresado ----------------------	
-	if mostrar.get()=="0":  						# si la pantalla esta en 0 
+	if mostrar.get()=="0":  						#si la pantalla esta en 0 
 		if entrada=="0" or entrada=="-" or entrada=="K" or entrada=="m":	
 			pass
 		elif entrada==",":
@@ -79,7 +79,8 @@ def escribir(entrada):								# se introducen los numeros  a operar
 				if "," in mostrar.get():
 					pass
 				else:
-					mostrar.set(mostrar.get()+',')					
+					mostrar.set(mostrar.get()+',')
+					
 		elif entrada=="K":
 			comaAPunto=mostrar.get().replace(",",".")		#reemplaza las comas por puntas para operar			
 			aFloatK=float(comaAPunto)*1000
@@ -96,10 +97,11 @@ def escribir(entrada):								# se introducen los numeros  a operar
 			mostrar.set(puntoAComa)
 
 		else:
-			mostrar.set(mostrar.get()+entrada)		#cada vez que se llama a esta función, la concatenación 
-	noConcatenar=0							#queda habilitada, en realidad para evitar malos entendidos								
-									#tendría que renombrar la variable como "concatenar" y que
-									#salga de la función con valor 1
+			mostrar.set(mostrar.get()+entrada)
+	noConcatenar=0								#cada vez que se llama a esta funcion, la concatenacion 
+										#queda habilitada, en realidad para evitar malos entendidos
+										#tendria que renombrar la variable como "concatenar" y que
+										#salga con valor 1
 #-------------------------------------------------------------------------------------------------------
 def escribirConst(entrada,mem=0):
 	global noConcatenar
@@ -156,49 +158,59 @@ def operarConSiguiente(oper):
 		if noConcatenar==0 or noConcatenar==1:
 			noConcatenar=2
 			if bufferOp!="":
-				if bufferOp=="+":					# operacion suma
+				if bufferOp=="+":
 					buffer1+=getValor
-				elif bufferOp=="-":					# operacion resta
+
+				elif bufferOp=="-":
 					buffer1-=getValor
-				elif bufferOp=="*":					# operacion multiplicación
+
+				elif bufferOp=="*":
 					buffer1*=getValor
-				elif bufferOp=="/":					# operacion división
+
+				elif bufferOp=="/":
 					divisor=getValor
 					if divisor==0:
 						borrar()
-						buffer1="E"				# error division entre 0
+						buffer1="E"
 					else:
 						buffer1/=divisor
-				elif bufferOp=="rYdeX":					# operación raiz Y esima de X
-					if buffer1<=0:					# Si X es negativo,
-						if getValor%2 ==0:			# error si Y es un entero negativo par 
+
+				elif bufferOp=="rYdeX":
+					if buffer1<=0:					
+						if getValor%2 ==0:			# Error si es un entero negativo par 
 							buffer1="E2"					
-						elif getValor%2==1:			# Si Y es un entero negativo impar 
-							buffer1*=-1			# el resultado es negativo
-							buffer1=-(buffer1**(1/getValor))
-						else:					# si Y es un negativo no entero
+						elif getValor%2==1:			# Si es un entero negativo impar el resultado es negativo
 							buffer1*=-1
-							buffer1=buffer1**(1/getValor)	# el resultado es positivo
+							buffer1=-(buffer1**(1/getValor))
+						else:						# si es un negativo no entero
+							buffer1*=-1
+							buffer1=buffer1**(1/getValor)
 					else:
-						buffer1=buffer1**(1/getValor)				
-				elif bufferOp=="XexpY":					# Esta función necesita ser corregida.	
-					buffer1=buffer1**getValor			# Falla cuando buffer1 es menor que 0
-											# y el exponente (getValor) está entre -1 y 1
+						buffer1=buffer1**(1/getValor)
+					
+				elif bufferOp=="XexpY":
+					buffer1=buffer1**getValor
+
 				if buffer1=="E":
 					mostrar.set("* ERROR (Resultado infinito) *")
+
 				elif buffer1=="E2":
 					mostrar.set("* Operacion no soportada *")
+
 				else:
 					if buffer1-int(buffer1)==0:
 					 	buffer1=int(buffer1)
-					mostrar.set(str(buffer1).replace(".",","))			
+					mostrar.set(str(buffer1).replace(".",","))
+				
 			else:
 				buffer1=getValor
 				bufferOp=oper
+	
 		else:
 			bufferOp=oper 
 			noConcatenar=2
-		if oper=="=":		
+		if oper=="=":
+			
 			bufferOp=""
 		else:
 			bufferOp=oper
@@ -221,6 +233,7 @@ def operar(oper):
 				if y-int(y)==0:
 					y=int(y)	
 				mostrar.set(str(y).replace(".",","))
+
 		elif oper=="log":
 			if getValor<=0:
 				borrar()
@@ -230,6 +243,7 @@ def operar(oper):
 				if x-int(x)==0:
 					x=int(x)
 				mostrar.set(str(x).replace(".",","))
+
 		elif oper=="R2":
 			if getValor<0:
 				mostrar.set("* Operacion no soportada *")
@@ -238,6 +252,7 @@ def operar(oper):
 				if r2-int(r2)==0:
 					r2=int(r2)
 				mostrar.set(str(r2).replace(".",","))
+
 		elif oper=="XCuad":
 			X2=getValor**2
 			if X2-int(X2)==0:
@@ -283,6 +298,7 @@ def borrar():
 	buffer1=0
 	bufferOp=""
 	mostrar.set("0")
+
 
 #--------------------- Memoria 1 ------------------------
 
@@ -431,7 +447,6 @@ imgRaizNdeX=PhotoImage(file="rNdeX.gif",height=42,width=60)
 raizNdeX=Button(operFrame,image=imgRaizNdeX,bg=colBoton,command= partial(operarConSiguiente,"rYdeX"))
 raizNdeX.grid(row=5,column=2,padx=5,pady=5)
 
-
 #----------------------------------------------------------
 
 Pi=Button(operFrame,text="PI",font=("Arial",18),bg=colBoton,width=4,command= partial(escribirConst,"Pi"))
@@ -471,3 +486,4 @@ igual=Button(raiz,text="=",font=("Arial",18),bg=colBoton,width=40,command= parti
 igual.grid(row=4,column=1,padx=10,pady=10,columnspan=2)
 
 raiz.mainloop()
+
